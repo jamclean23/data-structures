@@ -3,7 +3,7 @@
 /*Assignment
 
 OBJECTIVE:
-    - Build a module method that will convert an array into a linked list.
+    - Build a module that will convert an array into a linked list.
     - Build functionality so that the module passes a series of tests.
 
 You will need two classes or factories:
@@ -33,6 +33,24 @@ Extra Credit
     */
 
 
+// FUNCTIONS
+
+const DataManager = (function () {
+
+    function printSomething () {
+        console.log('something');
+    }
+
+    return {
+        printSomething
+    }
+}());
+
+
+// INITIALIZE
+
+DataManager.printSomething();
+
 // TESTS
 
 // Add a node containing a value to the end of the list with DataManager.append(value)
@@ -58,6 +76,7 @@ Extra Credit
 // DataManager.insertAt(value, index) inserts a new node at provided index with provided value
 
 // DataManager.removeAt(index) removes the node at given index
+
 
 
 
