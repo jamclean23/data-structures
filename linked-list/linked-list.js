@@ -209,10 +209,10 @@ const LinkedList = (function () {
     }
 
     function insertAt (value, index) {
-        if (index > 0) {
-            return recurse(value, index, this.storedList);
+        if (index >= 0) {
+            this.storedList = recurse(value, index, Object.assign({}, this.storedList));
         } else {
-            return 'Out of bounds';
+             console.log('Out of bounds');
         }
 
         function recurse (value, index, list, accumulator = 0) {
