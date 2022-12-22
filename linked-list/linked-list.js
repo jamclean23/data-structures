@@ -150,7 +150,7 @@ const LinkedList = (function () {
 
         let list = Object.assign({}, this.storedList);
 
-        console.log(removeLast(list));
+        removeLast(list);
         
         function removeLast (list) {
 
@@ -167,6 +167,51 @@ const LinkedList = (function () {
         }
     }
 
+    function contains (value) {
+        return recurse(value, this.storedList);
+
+        function recurse (value, list) {
+            if (list.value === value) {
+                return true;
+            } else if (list.next === null) {
+                return false;
+            } else {
+                return recurse(value, list.next);
+            }
+        }
+
+    }
+
+    function find (value) {
+        return recurse(value, this.storedList);
+
+        function recurse (value, list, accumulator = 0) {
+            if (list.value === value) {
+                return accumulator;
+            } else if (list.next === null) {
+                return null;
+            } else {
+                return recurse(value, list.next, ++accumulator);
+            }
+        }
+    }
+
+    function toString () {
+        return recurse(this.storedList)
+
+        function recurse(list, string = '') {
+            if (list.next === null) {
+                return list.value;
+            } else {
+                return string + list.value + ', ' + recurse(list.next, string);
+            }
+        }
+    }
+
+    function insertAt (value, index) {
+
+    }
+
     return {
         CreateNode,
         arrayToLinkedList,
@@ -178,10 +223,21 @@ const LinkedList = (function () {
         prepend,
         size,
         at,
-        pop
+        pop,
+        contains,
+        find,
+        toString,
+        insertAt
     }
 }());
 
+function test(condition) {
+    if (condition) {
+        console.log('\x1b[32m%s\x1b[0m', 'PASS');
+    } else {
+        console.log('\x1b[31m%s\x1b[0m', 'FAIL');
+    }
+}
 
 // INITIALIZE
 
@@ -193,80 +249,62 @@ LinkedList.arrayToLinkedList(myArray);
 
 
 // TESTS
-console.log('\n----TESTS----\n');
+console.log('\n\n----TESTS----\n');
 
 // LinkedList.tail() returns the last node on the list
 console.log('\n.tail() returns the last item of list');
-if (LinkedList.tail().value === 'orangutan') {
-    console.log('PASS');
-} else {
-    console.log('FAIL');
-}
+test(LinkedList.tail().value === 'orangutan');
 
 // Add a node containing a value to the end of the list with LinkedList.append(value)
 console.log('\n.append(value) adds an item to the end of the list');
 LinkedList.append('bleh');
-if (LinkedList.tail().value === 'bleh') {
-    console.log('PASS');
-} else {
-    console.log('FAIL');
-}
+test(LinkedList.tail().value === 'bleh');
 
 // LinkedList.head() returns the first node on the list
 console.log('\n.head() returns the first node on the list');
-if (LinkedList.head().value === 'blah') {
-    console.log('PASS');
-} else {
-    console.log('FAIL');
-}
+test(LinkedList.head().value === 'blah');
 
 // Add a node containing a value to the beginning of the list with LinkedList.prepend(value)
 console.log('\n.prepend(value) adds a node to the beginning of the list');
 LinkedList.prepend(23);
-if (LinkedList.head().value === 23) {
-    console.log('PASS');
-} else {
-    console.log('FAIL');
-}
+test(LinkedList.head().value === 23);
 
 // LinkedList.size() returns the total number of nodes
 console.log('\n.size() counts the total number of nodes');
-if (LinkedList.size() === 11) {
-    console.log('PASS');
-} else {
-    console.log('FAIL');
-}
+test(LinkedList.size() === 11);
 
 // LinkedList.at(index) returns the node at the given index
 console.log('\n.at(index) returns the node at the given index');
-if (LinkedList.at(5) === true) {
-    console.log('PASS');
-} else {
-    console.log('FAIL');
-}
+test(LinkedList.at(5) === true);
 
 // LinkedList.pop() removes the last element from the list
 console.log('\n.pop() removes the last element from the list');
 LinkedList.pop();
-if (LinkedList.tail().value === 'orangutan') {
-    console.log('PASSED');
-} else {
-    console.log('FAIL');
-}
+test(LinkedList.tail().value === 'orangutan');
 
 // LinkedList.contains(value) returns true if the given value is in the list, false if not
+console.log('\n.contains(value) returns true/false depending on if the list contains a value');
+test(LinkedList.contains(true));
 
 // LinkedList.find(value) returns the index of the value if it's in the list, or null if it is not
+console.log('\n.find(value) returns the index of the value, or null if the value is not present');
+test(LinkedList.find('blah') === 1);
 
 // LinkedList.toString() returns the entire list in string format
+console.log('\n.toString() returns a string of all values in the list');
+test(LinkedList.toString() === '23, blah, 14, -6, 0, true, yellow, 2, 1, orangutan');
 
 // LinkedList.insertAt(value, index) inserts a new node at provided index with provided value
+console.log('\n.insertAt(value, index) inserts a new node at index with value');
+test(LinkedList.at(1) === 'blue');
 
 // LinkedList.removeAt(index) removes the node at given index
+// console.log('\n.removeAt(index) removes node at index');
+// test(LinkedList.at(1) === 'blah');
 
 
 // Final Linked List
-console.log('\n----RESULTANT LIST----\n')
+console.log('\n\n----RESULTANT LIST----\n')
 console.dir(LinkedList.storedList, {depth: null});
 console.log('\n');
 
