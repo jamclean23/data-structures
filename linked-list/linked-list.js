@@ -209,7 +209,46 @@ const LinkedList = (function () {
     }
 
     function insertAt (value, index) {
+        if (index > 0) {
+            return recurse(value, index, this.storedList);
+        } else {
+            return 'Out of bounds';
+        }
 
+        function recurse (value, index, list, accumulator = 0) {
+            if (accumulator === index) {
+                let newItem = CreateNode();
+                newItem.value = value;
+                newItem.next = Object.assign({}, list);
+                return newItem;
+            } else if (list.next === null) {
+                return 'Out of bounds';
+            } else {
+                list.next = recurse(value, index, list.next, ++accumulator);
+                return list;
+            }
+        }
+    }
+
+    function removeAt (index) {
+        if (index >= 0) {
+            this.storedList = recurse(index, Object.assign({}, this.storedList));
+        } else {
+            return 'Out of bounds';
+        }
+
+        function recurse (index, list, accumulator = 0) {
+            if (accumulator === index) {
+                let newItem = Object.assign({}, list.next);
+                return newItem;
+            } else if (list.next === null) {
+                console.log('Out of bounds');
+                return list;
+            } else {
+                list.next = recurse(index, list.next, ++accumulator);
+                return list;
+            }  
+        }
     }
 
     return {
@@ -227,7 +266,8 @@ const LinkedList = (function () {
         contains,
         find,
         toString,
-        insertAt
+        insertAt,
+        removeAt
     }
 }());
 
@@ -296,11 +336,13 @@ test(LinkedList.toString() === '23, blah, 14, -6, 0, true, yellow, 2, 1, orangut
 
 // LinkedList.insertAt(value, index) inserts a new node at provided index with provided value
 console.log('\n.insertAt(value, index) inserts a new node at index with value');
+LinkedList.insertAt('blue', 1);
 test(LinkedList.at(1) === 'blue');
 
 // LinkedList.removeAt(index) removes the node at given index
-// console.log('\n.removeAt(index) removes node at index');
-// test(LinkedList.at(1) === 'blah');
+console.log('\n.removeAt(index) removes node at index');
+LinkedList.removeAt(1);
+test(LinkedList.at(1) === 'blah');
 
 
 // Final Linked List
